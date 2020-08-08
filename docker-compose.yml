@@ -4,14 +4,12 @@ services:
         image: localstack/localstack
         container_name: localstack_demo
         ports:
-            - '4566-4599:4566-4599'
-            - "9000:9000"
+            - '4563-4599:4563-4599'
+            - '8055:8080'
         environment:
             - SERVICES=sqs
             - DEFAULT_REGION=eu-central-1
             - DEBUG=${DEBUG- 1}
-            - PORT_WEB_UI=9000
-            - PORT_WEB_UI_INTERNAL=8080
             - DATA_DIR=/tmp/localstack/data
         volumes:
           - './.localstack:/tmp/localstack'

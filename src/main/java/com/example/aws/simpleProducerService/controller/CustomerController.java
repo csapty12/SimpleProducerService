@@ -1,7 +1,7 @@
 package com.example.aws.simpleProducerService.controller;
 
 import com.example.aws.simpleProducerService.model.Customer;
-import com.example.aws.simpleProducerService.service.CustomerService;
+import com.example.aws.simpleProducerService.producerservice.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

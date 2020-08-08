@@ -1,4 +1,4 @@
-package com.example.aws.simpleProducerService.service;
+package com.example.aws.simpleProducerService.producerservice;
 
 import com.example.aws.simpleProducerService.model.Customer;
 
