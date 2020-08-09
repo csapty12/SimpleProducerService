@@ -17,12 +17,6 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@PostMapping("/queue")
-	public void queueMessage(@RequestBody Customer customer){
-		log.info("customer to be queued : " + customer);
-		customerService.queue(customer);
-	}
-
 	@PostMapping("/notify")
 	public void sendMessage(@RequestBody Customer customer){
 		log.info("customer to be queued : " + customer);

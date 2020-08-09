@@ -20,23 +20,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	private final ObjectMapper objectMapper;
 
-	private final AmazonSQS sqs;
 	private final AmazonSNS sns;
 
-	public CustomerServiceImpl(ObjectMapper objectMapper, AmazonSQS sqs, AmazonSNS sns) {
-		this.objectMapper = objectMapper;
-		this.sqs = sqs;
-		this.sns = sns;
-	}
 
-	@Override
-	public void queue(Customer customer) {
-		try {
-			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(sqs.getQueueUrl("my-new-queue").getQueueUrl(), objectMapper.writeValueAsString(customer)));
-			System.out.println("send message result: "+ sendMessageResult.getMessageId());
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+	public CustomerServiceImpl(ObjectMapper objectMapper, AmazonSNS sns) {
+		this.objectMapper = objectMapper;
+		this.sns = sns;
 	}
 
 	@Override
