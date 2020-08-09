@@ -2,6 +2,7 @@ package com.example.aws.simpleProducerService.producerservice;
 
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.CreateTopicRequest;
+import com.amazonaws.services.sns.model.PublishResult;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
@@ -40,6 +41,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void notify(Customer customer) {
-
+		try {
+			PublishResult publishResult = sns.publish(sns.listTopics().getTopics().get(0).getTopicArn(), objectMapper.writeValueAsString(customer));
+			log.info("published message with id: {}", publishResult.getMessageId());
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 }
