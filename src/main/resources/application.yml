@@ -7,7 +7,7 @@ aws:
     topic-name: my-first-topic
     host: http://localhost:4575
   sqs:
-    queue-name: my-first-queue
+    queue-name: my-new-queue
     host: http://localhost:4576
 
 server:

@@ -29,17 +29,17 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public void send(Customer customer) {
+	public void queue(Customer customer) {
+		try {
+			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(sqs.getQueueUrl("my-new-queue").getQueueUrl(), objectMapper.writeValueAsString(customer)));
+			System.out.println("send message result: "+ sendMessageResult.getMessageId());
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	public void notify(Customer customer) {
 
-		System.out.println("my topic" + sns.toString());
-		System.out.println("my queue: " + sqs.getQueueUrl("my-first-queue").getQueueUrl());
-
-//		try {
-//			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(sqs.getQueueUrl("my-first-queue").getQueueUrl(), objectMapper.writeValueAsString(customer)));
-//			System.out.println("send message result: "+ sendMessageResult.getMessageId());
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
 	}
 }
