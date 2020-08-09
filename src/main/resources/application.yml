@@ -4,10 +4,10 @@ aws:
   secretKey: bar
   region: us-east-1
   sns:
+    topic-name: my-first-topic
     host: http://localhost:4575
-    topic: my-first-topic
   sqs:
-    queue: my-first-queue
+    queue-name: my-first-queue
     host: http://localhost:4576
 
 server:

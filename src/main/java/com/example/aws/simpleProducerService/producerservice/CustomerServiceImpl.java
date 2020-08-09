@@ -30,13 +30,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void send(Customer customer) {
-		String myQueue = sqs.createQueue(new CreateQueueRequest("my-first-queue")).getQueueUrl();
-		String myTopicArn = sns.createTopic(new CreateTopicRequest("topicName")).getTopicArn();
-		System.out.println("my topic: " + myTopicArn);
-		System.out.println("my queue: " + myQueue);
+
+
+		System.out.println("my topic" + sns.toString());
+		System.out.println("my queue: " + sqs.getQueueUrl("my-first-queue").getQueueUrl());
 
 //		try {
-//			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(myQueue, objectMapper.writeValueAsString(customer)));
+//			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(sqs.getQueueUrl("my-first-queue").getQueueUrl(), objectMapper.writeValueAsString(customer)));
 //			System.out.println("send message result: "+ sendMessageResult.getMessageId());
 //		} catch (JsonProcessingException e) {
 //			e.printStackTrace();
