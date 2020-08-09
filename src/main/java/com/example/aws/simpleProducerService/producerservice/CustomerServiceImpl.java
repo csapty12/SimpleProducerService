@@ -1,53 +1,45 @@
 package com.example.aws.simpleProducerService.producerservice;
 
+import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.example.aws.simpleProducerService.model.Customer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-	@Value("${aws.accessKey}")
-	private String awsAccessKey;
+	private final ObjectMapper objectMapper;
 
-	@Value("${aws.secretKey}")
-	private String awsSecretKey;
+	private final AmazonSQS sqs;
+	private final AmazonSNS sns;
 
-	@Value("${sqs.url}")
-	private String sqsURL;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@PostConstruct
-	public void setProperty() {
-		System.setProperty("aws.accessKeyId", awsAccessKey);
-		System.setProperty("aws.secretKey", awsSecretKey);
+	public CustomerServiceImpl(ObjectMapper objectMapper, AmazonSQS sqs, AmazonSNS sns) {
+		this.objectMapper = objectMapper;
+		this.sqs = sqs;
+		this.sns = sns;
 	}
 
 	@Override
 	public void send(Customer customer) {
-		AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
-		log.info("sqs info: {}",sqs);
+		String myQueue = sqs.createQueue(new CreateQueueRequest("my-first-queue")).getQueueUrl();
+		String myTopicArn = sns.createTopic(new CreateTopicRequest("topicName")).getTopicArn();
+		System.out.println("my topic: " + myTopicArn);
+		System.out.println("my queue: " + myQueue);
 
-		try {
-			sqs.sendMessage(new SendMessageRequest(sqsURL, objectMapper.writeValueAsString(customer)));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-
-
+//		try {
+//			SendMessageResult sendMessageResult = sqs.sendMessage(new SendMessageRequest(myQueue, objectMapper.writeValueAsString(customer)));
+//			System.out.println("send message result: "+ sendMessageResult.getMessageId());
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
 	}
-
-
 }
